@@ -1,28 +1,36 @@
 #include <iostream>
 #include <string>
 #include <sstream>
-#include <utility>
 #include <vector>
 
 using namespace std;
+
+struct Point {
+    int x,y;
+};
 
 int main() {
     int n, i, x, y;
     cin >> n;
     string input, line;
-    vector< pair<int,int> > points;
+    vector<Point> points;
     cout << n << " " << i << endl;
     while(getline(cin, line)) {
-        pair<int,int> p;
+        Point temp;
 
         stringstream ss(line);
         getline(ss, input, ',');
-        // x = stoi(input);
+        istringstream(input) >> x;
         getline(ss, input);
-        // y = stoi(input);
+        istringstream(input) >> y;
 
-        points.push_back(p);
+        temp.x = x;
+        temp.y = y;
+
+        points.push_back(temp);
         
+        if(i == n) break;
+
         ++i;
     }
     return 0;
