@@ -1,19 +1,29 @@
 #include <iostream>
 #include <string>
+#include <sstream>
 #include <utility>
 #include <vector>
 
 using namespace std;
 
-int main(int argc, char *argv[]) {
-    string in;
-    cin >> in;
-    int n = stoi(in);
-    string input;
-    vector<string> points;
-    while(0 < n) {
-        getline(cin, input);
-        points.push_back(input);
+int main() {
+    int n, i, x, y;
+    cin >> n;
+    string input, line;
+    vector< pair<int,int> > points;
+    cout << n << " " << i << endl;
+    while(getline(cin, line)) {
+        pair<int,int> p;
+
+        stringstream ss(line);
+        getline(ss, input, ',');
+        // x = stoi(input);
+        getline(ss, input);
+        // y = stoi(input);
+
+        points.push_back(p);
+        
+        ++i;
     }
     return 0;
 }
