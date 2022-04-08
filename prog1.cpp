@@ -14,7 +14,6 @@ int main() {
     cin >> n;
     string input, line;
     vector<Point> points;
-    cout << n << " " << i << endl;
     while(getline(cin, line)) {
         Point temp;
 
