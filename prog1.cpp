@@ -9,17 +9,23 @@ struct Point {
     int x,y;
 };
 
-vector<Point> FindHull(vector<Point> p, Point min, Point max, int s);
+vector<Point> FindHull(vector<Point>& p, Point min, Point max, int s, int n);
 
 void QuickHull(vector<Point> p, int n) {
-    vector<Point> hull;
+    vector<Point> hull, left, right;
 
-    Point min, max;
-    for(auto i : p) {
-        // stub
+    int min_y = 0, max_y = 0;
+    for(int i = 0; i < p.size(); ++i) {
+        if(p[i].y < p[min_y].y)
+            min_y = i;
+        if (p[i].y > p[max_y].y)
+            max_y = i;
     }
 
-    hull = FindHull(p, min, max, n);
+    left = FindHull(p, p[min_y], p[max_y], -1, n);
+    right = FindHull(p, p[min_y], p[max_y], 1, n);
+
+    left.insert( left.end(), right.begin(), right.end() );
 }
 
 int main() {
