@@ -47,7 +47,7 @@ vector<Point> FindHull(vector<Point> p, Point min, Point max, int s, int n){
         res.reserve( left.size() + right.size() );
         res.insert( res.end(), left.begin(), left.end() );
         res.insert( res.end(), right.begin(), right.end() );
-        return left;
+        return res;
     }
 
     res.push_back(min);
@@ -99,6 +99,12 @@ int main() {
 
         ++i;
     }
+    points.erase(points.begin());
+    for (int i = 0; i < points.size(); i++)
+    {
+        cout << points[i].x << " " << points[i].y << '\n';
+    }
+    
 
     vector<Point> hull;
     hull = QuickHull(points, n);
