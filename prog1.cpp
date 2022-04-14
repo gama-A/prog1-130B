@@ -13,15 +13,15 @@ struct Point {
 };
 
 int lineDst(Point p1, Point p2, Point q) {
-    return abs( (q.y - p1.y) * (p2.x - p1.x) * (p2.y - p1.y) * (q.x - p1.x) );
+    return abs( (q.y - p1.y) * (p2.x - p1.x) - (p2.y - p1.y) * (q.x - p1.x) );
 }
 
 int side(Point p1, Point p2, Point q) {
-    int s = (q.y - p1.y) * (p2.x - p1.x) * (p2.y - p1.y) * (q.x - p1.x);
+    int s = (q.y - p1.y) * (p2.x - p1.x) - (p2.y - p1.y) * (q.x - p1.x);
 
     if(s > 0)
         return 1;
-    if(s > 0)
+    if(s < 0)
         return -1;
     return 0;
 }
@@ -35,23 +35,25 @@ vector<Point> FindHull(vector<Point> p, Point min, Point max, int s, int n){
 
     for (int i = 0; i < n; i++) {
         int dist = lineDst(min, max, p[i]);
-        if( (side(min,max,p[i]) == s) && (dist > maxDst) ) {
+        int pointSide = side(min,max,p[i]);
+        if( (pointSide == s) && (dist > maxDst) ) {
             index = i;
             maxDst = dist;
         }
     }
 
-    if(index != -1) {
-        left = FindHull(p, p[index], min, -side(p[index], min, max), n);
-        right = FindHull(p, p[index], max, -side(p[index], max, min), n);
-        res.reserve( left.size() + right.size() );
-        res.insert( res.end(), left.begin(), left.end() );
-        res.insert( res.end(), right.begin(), right.end() );
-        return left;
+    if(index == -1) {
+        res.push_back(min);
+        res.push_back(max);
+        return res;
     }
+    left = FindHull(p, p[index], min, -side(p[index], min, max), n);
+    right = FindHull(p, p[index], max, -side(p[index], max, min), n);
+    // res.reserve( left.size() + right.size() );
+    res.insert( res.end(), left.begin(), left.end() );
+    res.insert( res.end(), right.begin(), right.end() );
+    return res;
 
-    res.push_back(min);
-    res.push_back(max);
     return res;
 }
 
@@ -69,18 +71,19 @@ vector<Point> QuickHull(vector<Point> p, int n) {
     left = FindHull(p, p[min_y], p[max_y], -1, n);
     right = FindHull(p, p[min_y], p[max_y], 1, n);
 
-    res.reserve( left.size() + right.size() );
+    //res.reserve( left.size() + right.size() );
     res.insert( res.end(), left.begin(), left.end() );
     res.insert( res.end(), right.begin(), right.end() );
 
-    return left;
+    return res;
 }
 
 int main() {
     int n, i, x, y;
+    i = 0;
     cin >> n;
     string input, line;
-    vector<Point> points;
+    vector<Point> points, hull;
     while(getline(cin, line)) {
         Point temp;
 
@@ -99,8 +102,13 @@ int main() {
 
         ++i;
     }
+    points.erase(points.begin());
+    for (int i = 0; i < points.size(); i++)
+    {
+        cout << points[i].x << " " << points[i].y << '\n';
+    }
+    
 
-    vector<Point> hull;
     hull = QuickHull(points, n);
 
     cout << hull.size() << endl;
