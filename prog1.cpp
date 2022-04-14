@@ -13,11 +13,11 @@ struct Point {
 };
 
 int lineDst(Point p1, Point p2, Point q) {
-    return abs( (q.y - p1.y) * (p2.x - p1.x) * (p2.y - p1.y) * (q.x - p1.x) );
+    return abs( (q.y - p1.y) * (p2.x - p1.x) - (p2.y - p1.y) * (q.x - p1.x) );
 }
 
 int side(Point p1, Point p2, Point q) {
-    int s = (q.y - p1.y) * (p2.x - p1.x) * (p2.y - p1.y) * (q.x - p1.x);
+    int s = (q.y - p1.y) * (p2.x - p1.x) - (p2.y - p1.y) * (q.x - p1.x);
 
     if(s > 0)
         return 1;
@@ -73,14 +73,15 @@ vector<Point> QuickHull(vector<Point> p, int n) {
     res.insert( res.end(), left.begin(), left.end() );
     res.insert( res.end(), right.begin(), right.end() );
 
-    return left;
+    return res;
 }
 
 int main() {
     int n, i, x, y;
+    i = 0;
     cin >> n;
     string input, line;
-    vector<Point> points;
+    vector<Point> points, hull;
     while(getline(cin, line)) {
         Point temp;
 
@@ -106,7 +107,6 @@ int main() {
     }
     
 
-    vector<Point> hull;
     hull = QuickHull(points, n);
 
     cout << hull.size() << endl;
