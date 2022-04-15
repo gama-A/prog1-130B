@@ -4,21 +4,21 @@
 #include <iostream>
 #include <string>
 #include <sstream>
-#include <set>
+#include <unordered_set>
 #include <vector>
+
+#include "Point.h"
 
 using namespace std;
 
-#define Point pair<float,float>
-
-set<Point> hull;
+unordered_set<Point> hull;
 
 float lineDst(Point p1, Point p2, Point q) {
-    return abs( (q.second - p1.second) * (p2.first - p1.first) - (p2.second - p1.second) * (q.first - p1.first) );
+    return abs( (q.y - p1.y) * (p2.x - p1.x) - (p2.y - p1.y) * (q.x - p1.x) );
 }
 
 float side(Point p1, Point p2, Point q) {
-    float s = (q.second - p1.second) * (p2.first - p1.first) - (p2.second - p1.second) * (q.first - p1.first);
+    float s = (q.y - p1.y) * (p2.x - p1.x) - (p2.y - p1.y) * (q.x - p1.x);
 
     if(s > 0)
         return 1;
@@ -26,8 +26,6 @@ float side(Point p1, Point p2, Point q) {
         return -1;
     return 0;
 }
-
-void customSort(vector<Point>& v);
 
 void QuickHull(vector<Point> p, Point min, Point max, int s, int n){
     float index = -1, maxDst = 0;
@@ -49,7 +47,7 @@ void QuickHull(vector<Point> p, Point min, Point max, int s, int n){
     QuickHull(p, p[index], min, -side(p[index], min, max), n);
     QuickHull(p, p[index], max, -side(p[index], max, min), n);
     
-    // return res;
+    return;
 }
 
 int main() {
@@ -68,8 +66,8 @@ int main() {
         getline(ss, input);
         istringstream(input) >> y;
 
-        temp.first = x;
-        temp.second = y;
+        temp.x = x;
+        temp.y = y;
 
         points.push_back(temp);
         
@@ -81,20 +79,18 @@ int main() {
 
     int min_y = 0, max_y = 0;
     for(int i = 0; i < n; i++) {
-        if(points[i].second < points[min_y].second)
+        if(points[i].y < points[min_y].y)
             min_y = i;
-        if (points[i].second > points[max_y].second)
+        if (points[i].y > points[max_y].y)
             max_y = i;
     }
 
     QuickHull(points, points[min_y], points[max_y], -1, n);
     QuickHull(points, points[min_y], points[max_y], -1, n);
 
-    cout << hull.size() << endl;
-    int j = 0;
+    std::cout << hull.size() << endl;
     for(auto i : hull) {
-        cout << j << ", " << i.first << ", " << i.second << '\n';
-        ++j;
+        std::cout << ", " << i.x << ", " << i.y << '\n';
     }
 
     return 0;
