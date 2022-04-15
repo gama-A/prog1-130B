@@ -52,28 +52,6 @@ void QuickHull(vector<Point> p, Point min, Point max, int s, int n){
     // return res;
 }
 
-/*
-vector<Point> QuickHull(vector<Point> p, int n) {
-    vector<Point> left, right, res;
-
-    int min_y = 0, max_y = 0;
-    for(int i = 0; i < n; i++) {
-        if(p[i].y < p[min_y].y)
-            min_y = i;
-        if (p[i].y > p[max_y].y)
-            max_y = i;
-    }
-
-    left = FindHull(p, p[min_y], p[max_y], -1, n);
-    right = FindHull(p, p[min_y], p[max_y], 1, n);
-
-    //res.reserve( left.size() + right.size() );
-    res.insert( res.end(), left.begin(), left.end() );
-    res.insert( res.end(), right.begin(), right.end() );
-
-    return res;
-} */
-
 int main() {
     int n, i;
     float x, y;
@@ -115,7 +93,7 @@ int main() {
     cout << hull.size() << endl;
     int j = 0;
     for(auto i : hull) {
-        cout << j << "," << i.first << "," << i.second << '\n';
+        cout << j << ", " << i.first << ", " << i.second << '\n';
         ++j;
     }
 
