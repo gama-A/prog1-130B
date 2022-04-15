@@ -6,6 +6,8 @@
 #include <sstream>
 #include <unordered_set>
 #include <vector>
+#include <algorithm>
+#include <cmath>
 
 #include "Point.h"
 
@@ -17,7 +19,7 @@ float lineDst(Point p1, Point p2, Point q) {
     return abs( (q.y - p1.y) * (p2.x - p1.x) - (p2.y - p1.y) * (q.x - p1.x) );
 }
 
-float side(Point p1, Point p2, Point q) {
+int side(Point p1, Point p2, Point q) {
     float s = (q.y - p1.y) * (p2.x - p1.x) - (p2.y - p1.y) * (q.x - p1.x);
 
     if(s > 0)
@@ -27,12 +29,12 @@ float side(Point p1, Point p2, Point q) {
     return 0;
 }
 
-void QuickHull(vector<Point> p, Point min, Point max, int s, int n){
+void QuickHull(vector<Point> p, Point min, Point max, float s, int n){
     float index = -1, maxDst = 0;
 
     for (int i = 0; i < n; i++) {
         float dist = lineDst(min, max, p[i]);
-        float pointSide = side(min,max,p[i]);
+        int pointSide = side(min, max, p[i]);
         if( (pointSide == s) && (dist > maxDst) ) {
             index = i;
             maxDst = dist;
@@ -48,6 +50,11 @@ void QuickHull(vector<Point> p, Point min, Point max, int s, int n){
     QuickHull(p, p[index], max, -side(p[index], max, min), n);
     
     return;
+}
+
+int findIndex(Point p, vector<Point> vp) {
+    vector<Point>::iterator it = find(vp.begin(), vp.end(), p);
+    return distance(vp.begin(), it);
 }
 
 int main() {
@@ -86,11 +93,11 @@ int main() {
     }
 
     QuickHull(points, points[min_y], points[max_y], -1, n);
-    QuickHull(points, points[min_y], points[max_y], -1, n);
+    QuickHull(points, points[min_y], points[max_y], 1, n);
 
     std::cout << hull.size() << endl;
     for(auto i : hull) {
-        std::cout << ", " << i.x << ", " << i.y << '\n';
+        std::cout << findIndex(i, points) << ", " << i.x << ", " << i.y << '\n';
     }
 
     return 0;
