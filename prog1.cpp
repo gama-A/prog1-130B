@@ -95,6 +95,9 @@ int main() {
     QuickHull(points, points[min_y], points[max_y], -1, n);
     QuickHull(points, points[min_y], points[max_y], 1, n);
 
+    vector<Point> h(hull.begin(), hull.end());
+
+
     std::cout << hull.size() << endl;
     for(auto i : hull) {
         std::cout << findIndex(i, points) << ", " << i.x << ", " << i.y << '\n';
